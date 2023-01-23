@@ -1,5 +1,5 @@
 import socket
-
+import time
 # Create a honeypot listening on port 1234
 honeypot = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 honeypot.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -23,13 +23,19 @@ while True:
     ip_logins[ip] += 1
 
     # Send a fake prompt
+    time.sleep(0.1)
     client.send("Welcome to the honeypot!\n".encode())
+    time.sleep(0.2)
     client.send("Username: ".encode())
+    time.sleep(0.2)
 
     # Receive login credentials (which should be fake)
     username = client.recv(1024).strip()
+    time.sleep(0.2)
     client.send("Password: ".encode())
+    time.sleep(0.2)
     password = client.recv(1024).strip()
+    time.sleep(3)
     client.send("Login failed!".encode())
 
     print("Received credentials:", username, password)
